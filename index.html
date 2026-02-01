@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Karabo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;400;600&family=Playfair+Display:italic,wght@700&display=swap');
+
+        :root {
+            --primary-pink: #ffafcc;
+            --accent-pink: #fb6f92;
+            --deep-rose: #c9184a;
+            --glass: rgba(255, 255, 255, 0.94);
+            --shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            color: #444;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- LUXURY ENVELOPE OPENING --- */
+        #splash {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #fff5f7, #ffccd5);
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .envelope-wrapper:hover { transform: scale(1.05); }
+
+        .envelope-main {
+            position: relative;
+            width: 350px;
+            height: 220px;
+            background: #f8adbc;
+            border-radius: 8px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .envelope-main::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-style: solid;
+            border-width: 110px 0 110px 175px;
+            border-color: transparent transparent transparent rgba(255,255,255,0.25);
+        }
+        .envelope-main::after {
+            content: "";
+            position: absolute;
+            top: 0; right: 0;
+            width: 0; height: 0;
+            border-style: solid;
+            border-width: 110px 175px 110px 0;
+            border-color: transparent rgba(255,255,255,0.25) transparent transparent;
+        }
+
+        .button-seal {
+            position: relative;
+            width: 65px;
+            height: 65px;
+            background: #ff4d6d;
+            border-radius: 50%;
+            border: 4px solid #c9184a;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 15px;
+            gap: 8px;
+        }
+        .hole { background: #800f2f; border-radius: 50%; width: 10px; height: 10px; box-shadow: inset 0 2px 2px rgba(0,0,0,0.4); }
+
+        /* --- MAIN CONTENT --- */
+        #content {
+            display: none;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-radius: 40px;
+            padding: 60px 40px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 2px solid rgba(251, 111, 146, 0.1);
+            position: relative;
+        }
+
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.8rem; color: var(--deep-rose); margin: 20px 0; }
+        
+        .slideshow-frame {
+            position: relative;
+            max-width: 550px;
+            height: 450px;
+            margin: 40px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #fff;
+            border: 8px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slide {
+            position: absolute;
+            max-width: 100%;
+            max-height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            object-fit: contain;
+        }
+        .slide.active { opacity: 1; }
+
+        .qualities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+            text-align: left;
+        }
+        .q-item {
+            background: rgba(255,255,255,0.7);
+            padding: 25px;
+            border-radius: 20px;
+            border-left: 4px solid var(--accent-pink);
+        }
+        .q-item strong { color: var(--deep-rose); display: block; font-size: 1.1rem; margin-bottom: 8px; }
+
+        /* --- BUTTONS --- */
+        .btn-yes {
+            background: var(--accent-pink);
+            color: white;
+            padding: 20px 70px;
+            font-size: 1.5rem;
+            border-radius: 60px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 15px 30px rgba(251, 111, 146, 0.3);
+            transition: 0.3s;
+        }
+        .btn-yes:hover { background: var(--deep-rose); transform: scale(1.05); }
+
+        #noBtn { background: #eee; color: #999; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; margin-left: 20px; }
+
+        /* --- SUCCESS PAGE --- */
+        #success {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .teddy-wrapper {
+            position: relative;
+            display: inline-block;
+            font-size: 100px;
+            margin-bottom: 20px;
+        }
+
+        .flower-decoration {
+            position: absolute;
+            font-size: 40px;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 30px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            aspect-ratio: 16 / 9;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .heart, .flower-particle { position: fixed; pointer-events: none; z-index: 1000; animation: floatUp 4s forwards linear; }
+        @keyframes floatUp { 0% { transform: translateY(100vh) scale(1); opacity: 1; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+
+        iframe { border-radius: 20px; margin-bottom: 25px; border: none; }
+    </style>
+</head>
+<body>
+
+    <!-- STEP 1: ENVELOPE -->
+    <div id="splash">
+        <div class="envelope-wrapper" onclick="openLetter()">
+            <div class="envelope-main">
+                <div class="button-seal">
+                    <div class="hole"></div><div class="hole"></div>
+                    <div class="hole"></div><div class="hole"></div>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top: 40px; letter-spacing: 5px; font-weight: 600; color: var(--deep-rose); text-transform: uppercase; font-size: 0.9rem;">For Karabo</p>
+    </div>
+
+    <!-- STEP 2: MAIN LETTER -->
+    <div id="content">
+        <div class="glass-card">
+            <!-- Starting Song: Kaash Paige @ 2:20 -->
+            <iframe src="https://open.spotify.com/embed/track/4nHZz756JdbAkRqMqT06rM?utm_source=generator&t=140" width="100%" height="80" allow="autoplay"></iframe>
+
+            <h1>To My Dearest Karabo,</h1>
+            
+            <p style="font-size: 1.25rem; line-height: 2; color: #555; font-weight: 300; margin: 40px 0;">
+                You have a heart too good for this awful world, but that’s okay because I promise to forever protect your little fragile heart. I just wish you could see how beautiful and deserving your soul is. 
+                <br><br>
+                I love how passionate you are with everything you do and how you always stand up for those who are afraid to speak up. You are my joy, my happiness and my peace. Watching you smile has never once failed to make me smile because you are my sweet baby.
+            </p>
+
+            <div class="slideshow-frame">
+                <img class="slide active" src="https://drive.google.com/thumbnail?id=1i-Nbbm6GBH2qFWmvIG0YDYwR-LRVKOo8&sz=w1000">
+                <img class="slide" src="https://drive.google.com/thumbnail?id=1yvKR9kBIvsiViEaHa0n6IlCSjUo4HMog&sz=w1000">
+                <img class="slide" src="https://drive.google.com/thumbnail?id=1VW2ybU4R4VYZF5ypcPDwyp-82NAfYyQ9&sz=w1000">
+                <img class="slide" src="https://drive.google.com/thumbnail?id=1iB9f013yr6CrZcpbXBhR7eQ4fOb7EPyS&sz=w1000">
+            </div>
+
+            <div class="qualities-grid">
+                <div class="q-item"><strong>A Massive Heart</strong>Your empathy and kindness for everyone around you is your superpower.</div>
+                <div class="q-item"><strong>Deeply Considerate</strong>You notice the smallest things that make others feel seen.</div>
+                <div class="q-item"><strong>Incredibly Goofy</strong>I love that we can be absolute weirdos together. It's my favorite part of us.</div>
+                <div class="q-item"><strong>Soulfully Caring</strong>The way you protect and care for the people you love is truly inspiring.</div>
+            </div>
+
+            <div style="margin-top: 80px;">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--deep-rose);">Will you be my Valentine?</h2>
+                <div style="position: relative; height: 120px; margin-top: 30px;">
+                    <button class="btn-yes" onclick="showSuccess()">YES! ❤️</button>
+                    <button id="noBtn" onmouseover="moveNo()">No</button>
+                </div>
+                <p style="color: #888; margin-top: 40px; font-weight: 500;">i love you my baby</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 3: SUCCESS PAGE -->
+    <div id="success">
+        <div class="glass-card" style="max-width: 650px; margin: 0 auto;">
+            <div class="teddy-wrapper">
+                🧸
+                <span class="flower-decoration" style="top: -20px; left: -40px;">🌸</span>
+                <span class="flower-decoration" style="bottom: -10px; right: -40px;">💖</span>
+                <span class="flower-decoration" style="top: 20px; right: -50px;">🌺</span>
+                <span class="flower-decoration" style="bottom: 30px; left: -50px;">💕</span>
+            </div>
+            
+            <h1>I'm the luckiest guy.</h1>
+            
+            <!-- Song 2: Daniel Caesar @ 1:30 -->
+            <iframe src="https://open.spotify.com/embed/track/723kBcWHaPWeAApqdYguSI?utm_source=generator&t=90" width="100%" height="80" allow="autoplay"></iframe>
+
+            <p style="font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--deep-rose); margin: 20px 0;">
+                "I will forever be here for you."
+            </p>
+            
+            <p style="font-size: 1.15rem; line-height: 1.8; color: #555; margin-bottom: 20px;">
+                Thank you for being you, Karabo. I love you more than words can say. You make every day brighter just by existing.
+            </p>
+
+            <div class="video-container">
+                <iframe src="https://drive.google.com/file/d/1Z7v_dQladQ1lvE3T7tU7WZNp0_RONcsm/preview" width="100%" height="100%" allow="autoplay"></iframe>
+            </div>
+
+            <p style="font-size: 2rem; color: var(--deep-rose); margin-top: 30px;">💖 Always & Forever 💖</p>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function startSlideshow() {
+            setInterval(() => {
+                slides[slideIndex].classList.remove('active');
+                slideIndex = (slideIndex + 1) % slides.length;
+                slides[slideIndex].classList.add('active');
+            }, 3000);
+        }
+
+        function openLetter() {
+            // MASSIVE HEART & FLOWER SPAM
+            for(let i=0; i<120; i++) {
+                setTimeout(() => spawnParticle('❤️'), i * 15);
+                if(i % 5 === 0) setTimeout(() => spawnParticle('🌸'), i * 20);
+            }
+            document.getElementById('splash').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+            startSlideshow();
+            window.scrollTo(0,0);
+        }
+
+        function spawnParticle(symbol) {
+            const p = document.createElement('div');
+            p.classList.add(symbol === '❤️' ? 'heart' : 'flower-particle');
+            p.innerHTML = symbol;
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            p.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 4000);
+        }
+
+        function moveNo() {
+            const btn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function showSuccess() {
+            // SUCCESS HEART & FLOWER SPAM
+            for(let i=0; i<150; i++) {
+                setTimeout(() => spawnParticle(['❤️', '💖', '🌸', '🌺', '✨'][Math.floor(Math.random()*5)]), i * 12);
+            }
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+    </script>
+</body>
+</html>
